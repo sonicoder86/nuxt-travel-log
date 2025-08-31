@@ -1,6 +1,7 @@
 # Nuxt Travel Log
 
 A full stack application built with Nuxt that allows users to keep track of all the places they've been.
+The site is available on https://nuxt-travel-log-coral.vercel.app/
 
 ## Setup
 
