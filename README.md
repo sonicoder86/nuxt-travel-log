@@ -1,6 +1,6 @@
-# Nuxt Minimal Starter
+# Nuxt Travel Log
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A full stack application built with Nuxt that allows users to keep track of all the places they've been.
 
 ## Setup
 
