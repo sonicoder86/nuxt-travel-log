@@ -8,7 +8,7 @@ The site is available on https://nuxt-travel-log-coral.vercel.app/
 Make sure to install dependencies:
 
 ```bash
-pnpm install
+npm install
 ```
 
 ## Development Server
@@ -16,7 +16,7 @@ pnpm install
 Start the development server on `http://localhost:3000`:
 
 ```bash
-pnpm dev
+npm run dev
 ```
 
 ## Production
@@ -24,17 +24,17 @@ pnpm dev
 Build the application for production:
 
 ```bash
-pnpm build
+npm run build
 ```
 
 Locally preview production build:
 
 ```bash
-pnpm preview
+npm run preview
 ```
 
 Analyze build
 
 ```bash
-pnpm analyze
+npm run analyze
 ```
