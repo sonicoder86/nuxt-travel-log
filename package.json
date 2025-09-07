@@ -13,9 +13,14 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconify-icons/tabler": "^1.2.95",
     "@nuxt/eslint": "1.9.0",
+    "@nuxt/icon": "^2.0.0",
+    "@tailwindcss/vite": "^4.1.13",
+    "daisyui": "^5.1.7",
     "eslint": "^9.34.0",
     "nuxt": "^4.0.3",
+    "tailwindcss": "^4.1.13",
     "vue": "^3.5.20",
     "vue-router": "^4.5.1"
   },
