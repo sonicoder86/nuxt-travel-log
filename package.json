@@ -16,6 +16,7 @@
     "@iconify-icons/tabler": "^1.2.95",
     "@nuxt/eslint": "1.9.0",
     "@nuxt/icon": "^2.0.0",
+    "@nuxtjs/color-mode": "^3.5.2",
     "@tailwindcss/vite": "^4.1.13",
     "daisyui": "^5.1.7",
     "nuxt": "^4.0.3",
