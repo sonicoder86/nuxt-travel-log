@@ -36,3 +36,16 @@ export async function findUniqueSlug(slug: string) {
 
   return slug;
 }
+
+export async function insertLocation(
+  insertable: InsertLocationType,
+  slug: string,
+  userId: number,
+) {
+  const [created] = await db.insert(location).values({
+    ...insertable,
+    slug,
+    userId,
+  }).returning();
+  return created;
+}
