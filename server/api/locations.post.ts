@@ -2,9 +2,8 @@ import type { DrizzleError } from "drizzle-orm";
 
 import slugify from "slug";
 
-import db from "~/lib/db";
-import { findLocationByName, findUniqueSlug } from "~/lib/db/queries/location";
-import { InsertLocation, location } from "~/lib/db/schema";
+import { findLocationByName, findUniqueSlug, insertLocation } from "~/lib/db/queries/location";
+import { InsertLocation } from "~/lib/db/schema";
 import sendZodError from "~/lib/send-zod-error";
 
 export default defineEventHandler(async (event) => {
@@ -35,13 +34,7 @@ export default defineEventHandler(async (event) => {
   );
 
   try {
-    const [created] = await db.insert(location).values({
-      ...result.data,
-      slug,
-      userId: event.context.user.id,
-    }).returning();
-
-    return created;
+    return await insertLocation(result.data, slug, event.context.user.id);
   }
   catch (e) {
     const error = e as DrizzleError;
