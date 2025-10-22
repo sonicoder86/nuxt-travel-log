@@ -11,6 +11,7 @@ const submitError = ref();
 const loading = ref(false);
 const submitted = ref(false);
 
+const locationStore = useLocationStore();
 const { $csrfFetch } = useNuxtApp();
 
 const onSubmit = handleSubmit(async (values) => {
@@ -19,6 +20,7 @@ const onSubmit = handleSubmit(async (values) => {
     loading.value = true;
     await $csrfFetch("/api/locations", { method: "POST", body: values });
     submitted.value = true;
+    locationStore.refresh();
     navigateTo("/dashboard");
   }
   catch (e) {
