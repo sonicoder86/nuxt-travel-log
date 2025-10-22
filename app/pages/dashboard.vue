@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useSidebarStore } from "~/stores/sidebar";
+
 const isSidebarOpenCookie = useCookie<boolean>("is-sidebar-open");
 const isSidebarOpen = ref(isSidebarOpenCookie.value || false);
 
@@ -6,6 +8,12 @@ function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value;
   isSidebarOpenCookie.value = isSidebarOpen.value;
 }
+const sidebarStore = useSidebarStore();
+const locationStore = useLocationStore();
+
+onMounted(() => {
+  locationStore.refresh();
+});
 </script>
 
 <template>
@@ -41,6 +49,20 @@ function toggleSidebar() {
           icon="tabler:circle-plus-filled"
           :show-label="isSidebarOpen"
         />
+        <div v-if="sidebarStore.loading || sidebarStore.sidebarItems.length" class="divider" />
+        <div v-if="sidebarStore.loading" class="px-4">
+          <div class="skeleton h-4 w-full" />
+        </div>
+        <div v-if="!sidebarStore.loading && sidebarStore.sidebarItems.length" class="flex flex-col">
+          <SidebarButton
+            v-for="sidebarItem in sidebarStore.sidebarItems"
+            :key="sidebarItem.id"
+            :label="sidebarItem.label"
+            :icon="sidebarItem.icon"
+            :href="sidebarItem.href"
+            :show-label="isSidebarOpen"
+          />
+        </div>
         <div class="divider" />
         <SidebarButton
           href="/sign-out"
