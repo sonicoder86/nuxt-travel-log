@@ -9,6 +9,7 @@ The site is available on https://nuxt-travel-log-coral.vercel.app/
 - Linting: [ESLint](https://eslint.org/)
 - Styling: [TailwindCSS](https://tailwindcss.com/) and [DaisyUI](https://daisyui.com/)
 - Graphs: [Mermaid](https://github.com/mermaid-js/mermaid)
+- Maps: [Maplibre](https://maplibre.org/), [OpenFreeMap](https://openfreemap.org/), [MapTiler](https://www.maptiler.com/) 
 
 ## Setup
 
