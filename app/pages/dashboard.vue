@@ -89,7 +89,7 @@ onMounted(() => {
     <div class="flex-1 flex flex-col">
       <NuxtPage />
       <ClientOnly>
-        <AppMap class="flex-1" />
+        <AppMapNative class="flex-1" />
       </ClientOnly>
     </div>
   </div>
