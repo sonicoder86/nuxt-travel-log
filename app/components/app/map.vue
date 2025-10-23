@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { MglMap, MglNavigationControl } from "@indoorequal/vue-maplibre-gl";
+
 import { MAP_CENTER } from "~/lib/constants";
 
 const colorMode = useColorMode();
@@ -17,3 +19,7 @@ const zoom = 8;
     <MglNavigationControl />
   </MglMap>
 </template>
+
+<style lang="css">
+@import "maplibre-gl/dist/maplibre-gl.css";
+</style>
