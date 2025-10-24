@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { Map, NavigationControl } from "maplibre-gl";
+import { Map, Marker, NavigationControl } from "maplibre-gl";
 
-import { MAP_CENTER } from "~/lib/constants";
+import { MAP_CENTER, MAP_ZOOM } from "~/lib/constants";
 
-const container = shallowRef<HTMLElement>();
-const map = shallowRef<Map>();
+const container = ref<HTMLElement>();
+const map = ref<Map>();
+const mapStore = useMapStore();
+const { mapPoints } = storeToRefs(mapStore);
 const style = "https://tiles.openfreemap.org/styles/liberty";
-const zoom = 8;
+
+const markers = ref<Marker[]>([]);
 
 onMounted(() => {
   if (!container.value) {
@@ -15,11 +18,33 @@ onMounted(() => {
 
   map.value = new Map({
     container: container.value,
-    zoom,
+    zoom: MAP_ZOOM,
     style,
     center: MAP_CENTER,
   });
   map.value.addControl(new NavigationControl(), "top-right");
+});
+
+watch([map, mapPoints], ([newMap, newPoints]) => {
+  if (!newMap) {
+    return;
+  }
+
+  // Remove old markers
+  markers.value.forEach(marker => marker.remove());
+  markers.value = [];
+
+  // Add new markers
+  const newMarkers = newPoints.map((point) => {
+    const marker = new Marker();
+    marker.setLngLat({ lng: point.lng, lat: point.lat });
+    return marker;
+  });
+
+  markers.value = newMarkers;
+  newMarkers.forEach((marker) => {
+    marker.addTo(newMap);
+  });
 });
 </script>
 

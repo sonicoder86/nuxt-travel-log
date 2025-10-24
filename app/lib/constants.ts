@@ -1,1 +1,5 @@
-export const MAP_CENTER = { lon: -1.559482, lat: 47.21322 };
+export const MAP_CENTER = {
+  lat: 47.1611615,
+  lon: 19.5057541,
+};
+export const MAP_ZOOM = 6;

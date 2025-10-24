@@ -1,22 +1,33 @@
 <script setup lang="ts">
-import { MglMap, MglNavigationControl } from "@indoorequal/vue-maplibre-gl";
+import { MglMap, MglMarker, MglNavigationControl } from "@indoorequal/vue-maplibre-gl";
 
-import { MAP_CENTER } from "~/lib/constants";
+import { MAP_CENTER, MAP_ZOOM } from "~/lib/constants";
 
 const colorMode = useColorMode();
+const mapStore = useMapStore();
 const style = computed(() => {
   return colorMode.value === "dark" ? "/styles/dark.json" : "https://tiles.openfreemap.org/styles/liberty";
 });
-const zoom = 8;
+
+onMounted(() => {
+  mapStore.init();
+});
 </script>
 
 <template>
   <MglMap
     :map-style="style"
     :center="MAP_CENTER"
-    :zoom="zoom"
+    :zoom="MAP_ZOOM"
   >
     <MglNavigationControl />
+    <MglMarker v-for="point in mapStore.mapPoints" :key="point.id" :coordinates="{ lat: point.lat, lon: point.lng }">
+      <template #marker>
+        <div class="tooltip tooltip-top" data-tip="hello">
+          <icon name="tabler:map-pin-filled" size="30" class="text-secondary" />
+        </div>
+      </template>
+    </MglMarker>
   </MglMap>
 </template>
 

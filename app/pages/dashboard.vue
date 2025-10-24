@@ -32,7 +32,7 @@ onMounted(() => {
 
 <template>
   <div class="flex-1 flex">
-    <div class="bg-base-100" :class="{ 'w-64': isSidebarOpen, 'w-16': !isSidebarOpen }">
+    <div class="bg-base-100 shrink-0" :class="{ 'w-64': isSidebarOpen, 'w-16': !isSidebarOpen }">
       <div
         class="flex cursor-pointer hover:bg-base-300 p-2"
         :class="{ 'justify-center': !isSidebarOpen, 'justify-end': isSidebarOpen }"
@@ -86,11 +86,13 @@ onMounted(() => {
         />
       </div>
     </div>
-    <div class="flex-1 flex flex-col">
-      <NuxtPage />
-      <ClientOnly>
-        <AppMapNative class="flex-1" />
-      </ClientOnly>
+    <div class="flex-1 overflow-auto">
+      <div class="flex flex-col size-full">
+        <NuxtPage />
+        <ClientOnly>
+          <AppMap class="flex-1" />
+        </ClientOnly>
+      </div>
     </div>
   </div>
 </template>
