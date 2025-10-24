@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const mapStore = useMapStore();
 const locationStore = useLocationStore();
 const { locations, status } = storeToRefs(locationStore);
 </script>
@@ -15,7 +16,13 @@ const { locations, status } = storeToRefs(locationStore);
       <div
         v-for="location in locations"
         :key="location.id"
-        class="card card-compact bg-base-300 h-40 w-72 shrink-0"
+        class="card card-compact border-2 bg-base-300 mb-2 h-40 w-72 shrink-0 cursor-pointer"
+        :class="{
+          'border-accent': mapStore.selectedLocation?.id === location.id,
+          'border-transparent': mapStore.selectedLocation?.id !== location.id,
+        }"
+        @mouseenter="mapStore.selectLocation(location)"
+        @mouseleave="mapStore.selectLocation(null)"
       >
         <div class="card-body">
           <h2 class="text-xl">

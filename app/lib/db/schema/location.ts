@@ -19,6 +19,8 @@ export const location = sqliteTable("location", {
   unique().on(t.name, t.userId),
 ]);
 
+export type Location = typeof location.$inferSelect;
+
 export const InsertLocation = createInsertSchema(location, {
   name: field => field.min(1).max(100),
   description: field => field.max(1000),

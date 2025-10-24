@@ -6,21 +6,9 @@ function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value;
   isSidebarOpenCookie.value = isSidebarOpen.value;
 }
+const mapStore = useMapStore();
 const locationStore = useLocationStore();
 const { locations, status } = storeToRefs(locationStore);
-const sidebarItems = computed(() => {
-  if (!locations.value)
-    return [];
-
-  return locations.value.map((location) => {
-    return {
-      id: `location-${location.id}`,
-      label: location.name,
-      icon: "tabler:map-pin-filled",
-      href: "#",
-    };
-  });
-});
 const loading = computed(() => {
   return status.value === "pending";
 });
@@ -63,18 +51,21 @@ onMounted(() => {
           icon="tabler:circle-plus-filled"
           :show-label="isSidebarOpen"
         />
-        <div v-if="loading || sidebarItems.length" class="divider" />
+        <div v-if="loading || locations?.length" class="divider" />
         <div v-if="loading" class="px-4">
           <div class="skeleton h-4 w-full" />
         </div>
-        <div v-if="!loading && sidebarItems.length" class="flex flex-col">
+        <div v-if="!loading && locations?.length" class="flex flex-col">
           <SidebarButton
-            v-for="sidebarItem in sidebarItems"
-            :key="sidebarItem.id"
-            :label="sidebarItem.label"
-            :icon="sidebarItem.icon"
-            :href="sidebarItem.href"
+            v-for="location in locations"
+            :key="location.id"
+            :label="location.name"
+            icon="tabler:map-pin-filled"
+            href="#"
             :show-label="isSidebarOpen"
+            :icon-color="mapStore.selectedLocation?.id === location.id ? 'text-accent' : undefined"
+            @mouseenter="mapStore.selectLocation(location)"
+            @mouseleave="mapStore.selectLocation(null)"
           />
         </div>
         <div class="divider" />

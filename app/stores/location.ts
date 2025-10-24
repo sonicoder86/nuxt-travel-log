@@ -1,22 +1,15 @@
 export const useLocationStore = defineStore("locationStore", () => {
-  const { data, status, refresh } = useFetch("/api/locations");
+  const { data: locations, status, refresh } = useFetch("/api/locations");
 
   const sidebarStore = useSidebarStore();
-  const mapStore = useMapStore();
 
   watchEffect(() => {
-    if (data.value) {
-      sidebarStore.sidebarItems = data.value.map(location => ({
+    if (locations.value) {
+      sidebarStore.sidebarItems = locations.value.map(location => ({
         id: `location-${location.id}`,
         label: location.name,
         icon: "tabler:map-pin-filled",
         href: "#",
-      }));
-      mapStore.mapPoints = data.value.map(location => ({
-        id: location.id,
-        label: location.name,
-        lat: location.lat,
-        lng: location.long,
       }));
     }
 
@@ -24,7 +17,7 @@ export const useLocationStore = defineStore("locationStore", () => {
   });
 
   return {
-    locations: data,
+    locations,
     status,
     refresh,
   };
