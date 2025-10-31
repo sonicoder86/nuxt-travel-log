@@ -3,11 +3,11 @@ import type { Location } from "~/lib/db/schema";
 export const useMapStore = defineStore("mapStore", () => {
   const selectedLocation = ref<Location | null>(null);
   const flyTo = ref(true);
+  const selectedPoint = ref<{ lat: number; lon: number } | null>(null);
   const locationStore = useLocationStore();
   const { locations } = storeToRefs(locationStore);
 
-  function selectLocation(location: Location | null, flyToValue = true) {
-    flyTo.value = flyToValue;
+  function selectLocation(location: Location | null) {
     selectedLocation.value = location;
   }
 
@@ -40,20 +40,16 @@ export const useMapStore = defineStore("mapStore", () => {
       map.map?.fitBounds(bounds, { padding: 60 });
     });
 
-    effect(() => {
-      if (selectedLocation.value) {
-        if (flyTo.value) {
-          map.map?.flyTo({
-            center: { lon: selectedLocation.value.long, lat: selectedLocation.value.lat },
-            speed: 0.8,
-          });
-        }
+    watch(selectedPoint, (newValue, oldValue) => {
+      if (newValue && !oldValue) {
+        map.map?.flyTo({
+          center: newValue,
+          speed: 0.8,
+          zoom: 6,
+        });
       }
-      else if (bounds) {
-        map.map?.fitBounds(bounds, { padding: 60 });
-      }
-    });
+    }, { immediate: true });
   }
 
-  return { init, selectedLocation, flyTo, selectLocation };
+  return { init, selectedLocation, flyTo, selectLocation, selectedPoint };
 });

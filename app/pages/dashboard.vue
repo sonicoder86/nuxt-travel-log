@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const isSidebarOpenCookie = useCookie<boolean>("is-sidebar-open");
 const isSidebarOpen = ref(isSidebarOpenCookie.value || false);
+const route = useRoute();
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value;
@@ -77,8 +78,8 @@ onMounted(() => {
         />
       </div>
     </div>
-    <div class="flex-1 overflow-auto">
-      <div class="flex flex-col size-full">
+    <div class="flex-1 overflow-auto bg-base-200">
+      <div class="flex size-full" :class="{ 'flex-col': route.path !== '/dashboard/add' }">
         <NuxtPage />
         <ClientOnly>
           <AppMap class="flex-1" />

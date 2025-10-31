@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import type { FetchError } from "ofetch";
 
+import { MAP_CENTER } from "~/lib/constants";
 import { InsertLocation } from "~/lib/db/schema";
 
-const { handleSubmit, errors, meta, setErrors } = useForm({
+const { handleSubmit, errors, meta, setErrors, setFieldValue, controlledValues } = useForm({
   validationSchema: toTypedSchema(InsertLocation),
+  initialValues: {
+    name: "",
+    description: "",
+    lat: MAP_CENTER.lat,
+    long: MAP_CENTER.lon,
+  },
 });
 const router = useRouter();
 const submitError = ref();
@@ -12,6 +19,7 @@ const loading = ref(false);
 const submitted = ref(false);
 
 const locationStore = useLocationStore();
+const mapStore = useMapStore();
 const { $csrfFetch } = useNuxtApp();
 
 const onSubmit = handleSubmit(async (values) => {
@@ -43,12 +51,31 @@ onBeforeRouteLeave(() => {
     }
   }
 
+  mapStore.selectedPoint = null;
   return true;
+});
+
+function formatNumber(value?: number) {
+  if (!value)
+    return 0;
+
+  return value.toFixed(5);
+}
+
+effect(() => {
+  if (mapStore.selectedPoint) {
+    setFieldValue("lat", mapStore.selectedPoint.lat);
+    setFieldValue("long", mapStore.selectedPoint.lon);
+  }
+});
+
+onMounted(() => {
+  mapStore.selectedPoint = { ...MAP_CENTER };
 });
 </script>
 
 <template>
-  <div class="container max-w-md mx-auto mt-4">
+  <div class="container max-w-md mx-auto mt-4 p-4">
     <div class="my-2">
       <h1 class="text-lg">
         Add Location
@@ -72,8 +99,11 @@ onBeforeRouteLeave(() => {
         :disabled="loading"
       />
       <AppFormField name="description" label="Description" type="textarea" :error="errors.description" :disabled="loading" />
-      <AppFormField name="lat" label="Latitude" type="number" :error="errors.lat" :disabled="loading" />
-      <AppFormField name="long" label="Longitude" type="number" :error="errors.long" :disabled="loading" />
+      <p>Drag the <Icon name="tabler:map-pin-filled" class="text-warning" /> marker to your desired location.</p>
+      <p>Or double click on the map.</p>
+      <p class="text-xs text-gray-400">
+        Current location: {{ formatNumber(controlledValues.lat) }}, {{ formatNumber(controlledValues.long) }}
+      </p>
       <div class="flex justify-end gap-2">
         <button :disabled="loading" type="button" class="btn" @click="router.back()">
           <Icon name="tabler:arrow-left" size="24" />
