@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { FetchError } from "ofetch";
 
+import type { NominatimResult } from "~/lib/types";
+
 import { MAP_CENTER } from "~/lib/constants";
 import { InsertLocation } from "~/lib/db/schema";
 
@@ -62,6 +64,14 @@ function formatNumber(value?: number) {
   return value.toFixed(5);
 }
 
+function searchResultSelected(result: NominatimResult) {
+  setFieldValue("name", result.display_name);
+  mapStore.selectedPoint = {
+    lon: Number(result.lon),
+    lat: Number(result.lat),
+  };
+}
+
 effect(() => {
   if (mapStore.selectedPoint) {
     setFieldValue("lat", mapStore.selectedPoint.lat);
@@ -99,11 +109,22 @@ onMounted(() => {
         :disabled="loading"
       />
       <AppFormField name="description" label="Description" type="textarea" :error="errors.description" :disabled="loading" />
-      <p>Drag the <Icon name="tabler:map-pin-filled" class="text-warning" /> marker to your desired location.</p>
-      <p>Or double click on the map.</p>
       <p class="text-xs text-gray-400">
         Current location: {{ formatNumber(controlledValues.lat) }}, {{ formatNumber(controlledValues.long) }}
       </p>
+      <p>To set the coordinates:</p>
+      <ul class="list-disc ml-4 text-sm">
+        <li>
+          Drag the <Icon name="tabler:map-pin-filled" class="text-warning" /> marker on the map.
+        </li>
+        <li>
+          Double click the map.
+        </li>
+        <li>
+          Search for a location below.
+        </li>
+      </ul>
+
       <div class="flex justify-end gap-2">
         <button :disabled="loading" type="button" class="btn" @click="router.back()">
           <Icon name="tabler:arrow-left" size="24" />
@@ -116,5 +137,7 @@ onMounted(() => {
         </button>
       </div>
     </form>
+    <div class="divider" />
+    <AppPlaceSearch @result-selected="searchResultSelected" />
   </div>
 </template>

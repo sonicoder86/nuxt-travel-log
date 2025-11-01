@@ -39,7 +39,13 @@ onMounted(() => {
     @map:dblclick="onDoubleClick"
   >
     <MglNavigationControl />
-    <MglMarker v-if="mapStore.selectedPoint" :coordinates="mapStore.selectedPoint || MAP_CENTER" draggable @update:coordinates="updateSelectedPoint">
+    <MglMarker
+      v-if="mapStore.selectedPoint"
+      class-name="z-50"
+      :coordinates="mapStore.selectedPoint || MAP_CENTER"
+      draggable
+      @update:coordinates="updateSelectedPoint"
+    >
       <template #marker>
         <div
           class="tooltip tooltip-top tooltip-open cursor-pointer"
