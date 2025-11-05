@@ -62,7 +62,7 @@ onMounted(() => {
             :key="location.id"
             :label="location.name"
             icon="tabler:map-pin-filled"
-            href="#"
+            :to="{ name: 'dashboard-location-slug', params: { slug: location.slug } }"
             :show-label="isSidebarOpen"
             :icon-color="mapStore.selectedLocation?.id === location.id ? 'text-accent' : undefined"
             @mouseenter="mapStore.selectLocation(location)"
@@ -79,12 +79,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="flex-1 overflow-auto bg-base-200">
-      <div class="flex size-full" :class="{ 'flex-col': route.path !== '/dashboard/add' }">
-        <NuxtPage />
-        <ClientOnly>
-          <AppMap class="flex-1" />
-        </ClientOnly>
-      </div>
+      <NuxtPage />
     </div>
   </div>
 </template>

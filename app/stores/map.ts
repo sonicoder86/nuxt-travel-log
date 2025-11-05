@@ -16,7 +16,7 @@ export const useMapStore = defineStore("mapStore", () => {
     const { LngLatBounds } = await import("maplibre-gl");
 
     const map = useMap();
-    let bounds: LngLatBounds | null = null;
+    let bounds: any | null = null;
 
     effect(() => {
       if (!locations.value) {
